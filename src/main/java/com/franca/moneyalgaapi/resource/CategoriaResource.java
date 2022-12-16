@@ -15,6 +15,7 @@ public class CategoriaResource {
 
     private CategoriaRepository categoriaRepository;
 
+
     @Autowired
     public CategoriaResource(CategoriaRepository categoriaRepository) {
         this.categoriaRepository = categoriaRepository;
