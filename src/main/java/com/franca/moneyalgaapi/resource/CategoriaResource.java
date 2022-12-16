@@ -3,7 +3,6 @@ package com.franca.moneyalgaapi.resource;
 import com.franca.moneyalgaapi.model.Categoria;
 import com.franca.moneyalgaapi.rapository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
