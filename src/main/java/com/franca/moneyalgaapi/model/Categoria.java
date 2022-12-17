@@ -2,8 +2,8 @@ package com.franca.moneyalgaapi.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.Objects;
+
 
 
 @Entity
