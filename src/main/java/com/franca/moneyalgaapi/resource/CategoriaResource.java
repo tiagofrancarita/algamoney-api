@@ -14,23 +14,19 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/categorias")
 public class CategoriaResource {
 
     private static final Logger logger = LoggerFactory.getLogger(CategoriaResource.class);
 
-    private CategoriaRepository categoriaRepository;
-
+    private final CategoriaRepository categoriaRepository;
 
     @Autowired
     public CategoriaResource(CategoriaRepository categoriaRepository) {
         this.categoriaRepository = categoriaRepository;
     }
 
-    @CrossOrigin(origins = "*")
     @GetMapping("/listartodas")
     public List<Categoria> listar(){
 
@@ -38,7 +34,6 @@ public class CategoriaResource {
 
     }
 
-    @CrossOrigin(origins = "*")
     @PostMapping("/cadastrarCategoria")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Categoria> cadastrarCategoria(@RequestBody Categoria categoria, HttpServletResponse response){
@@ -54,11 +49,12 @@ public class CategoriaResource {
 
     }
 
-    @CrossOrigin(origins = "*")
     @GetMapping("**/busca/{codigoCategoria}")
-    public Optional<Categoria> buscarCategoriaPorID(@PathVariable Long codigoCategoria)  {
+    public ResponseEntity<Categoria> buscarCategoriaPorID(@PathVariable Long codigoCategoria)  {
 
-        return categoriaRepository.findById(codigoCategoria);
+        Optional<Categoria> categoria = categoriaRepository.findById(codigoCategoria);
+
+        return categoria.isPresent() ? ResponseEntity.ok(categoria.get()) : ResponseEntity.notFound().build();
 
     }
 }
