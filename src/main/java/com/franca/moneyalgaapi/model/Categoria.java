@@ -1,6 +1,7 @@
 package com.franca.moneyalgaapi.model;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -14,6 +15,8 @@ public class Categoria implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
 
+    @NotNull
+    @Size(min = 3,max = 50)
     private String nome;
 
     public Long getCodigo() {
