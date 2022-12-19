@@ -60,4 +60,23 @@ public class CategoriaResource {
         return categoria.isPresent() ? ResponseEntity.ok(categoria.get()) : ResponseEntity.notFound().build();
 
     }
+
+    @DeleteMapping("**/deletarCategoriaId/{codigoCategoria}")
+    public ResponseEntity<String> deletarPessoaId(@PathVariable("codigoCategoria") Long codigoCategoria){
+
+        categoriaRepository.deleteById(codigoCategoria);
+
+        return new ResponseEntity<String>("Categoria Excluido", HttpStatus.OK);
+
+    }
+
+    @ResponseBody
+    @GetMapping("**/buscarCategoriaNome/{nomeCategoria}")
+    public ResponseEntity<List<Categoria>> buscarCategoriaNome(@PathVariable("nomeCategoria") String nomeCategoria){
+
+        List<Categoria> categorias = categoriaRepository.buscarCategoriaNome(nomeCategoria.toUpperCase());
+
+        return new ResponseEntity<List<Categoria>>(categorias, HttpStatus.OK);
+
+    }
 }
