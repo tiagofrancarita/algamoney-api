@@ -2,7 +2,9 @@ package com.franca.moneyalgaapi.resource;
 
 import com.franca.moneyalgaapi.event.RecursoCriadoEvent;
 import com.franca.moneyalgaapi.model.Categoria;
+import com.franca.moneyalgaapi.model.Pessoa;
 import com.franca.moneyalgaapi.rapository.CategoriaRepository;
+import com.franca.moneyalgaapi.service.CategoriaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,9 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,16 +26,19 @@ public class CategoriaResource {
 
     private final CategoriaRepository categoriaRepository;
 
+    private final CategoriaService categoriaService;
+
     private ApplicationEventPublisher publisher;
 
     @Autowired
-    public CategoriaResource(CategoriaRepository categoriaRepository, ApplicationEventPublisher publisher) {
+    public CategoriaResource(CategoriaRepository categoriaRepository, CategoriaService categoriaService, ApplicationEventPublisher publisher) {
         this.categoriaRepository = categoriaRepository;
+        this.categoriaService = categoriaService;
         this.publisher = publisher;
     }
 
     @GetMapping("/listartodas")
-    public List<Categoria> listar(){
+    public List<Categoria> listar() {
 
         return categoriaRepository.findAll();
 
@@ -42,18 +46,18 @@ public class CategoriaResource {
 
     @PostMapping("/cadastrarCategoria")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Categoria> cadastrarCategoria(@Valid @RequestBody Categoria categoria, HttpServletResponse response){
+    public ResponseEntity<Categoria> cadastrarCategoria(@Valid @RequestBody Categoria categoria, HttpServletResponse response) {
 
-       Categoria categoriaSalva =  categoriaRepository.save(categoria);
+        Categoria categoriaSalva = categoriaRepository.save(categoria);
 
-        publisher.publishEvent(new RecursoCriadoEvent(this,response,categoriaSalva.getCodigo()));
+        publisher.publishEvent(new RecursoCriadoEvent(this, response, categoriaSalva.getCodigo()));
 
         return new ResponseEntity<Categoria>(categoriaSalva, HttpStatus.CREATED);
 
     }
 
     @GetMapping("**/busca/{codigoCategoria}")
-    public ResponseEntity<Categoria> buscarCategoriaPorID(@PathVariable Long codigoCategoria)  {
+    public ResponseEntity<Categoria> buscarCategoriaPorID(@PathVariable Long codigoCategoria) {
 
         Optional<Categoria> categoria = categoriaRepository.findById(codigoCategoria);
 
@@ -62,7 +66,7 @@ public class CategoriaResource {
     }
 
     @DeleteMapping("**/deletarCategoriaId/{codigoCategoria}")
-    public ResponseEntity<String> deletarPessoaId(@PathVariable("codigoCategoria") Long codigoCategoria){
+    public ResponseEntity<String> deletarPessoaId(@PathVariable("codigoCategoria") Long codigoCategoria) {
 
         categoriaRepository.deleteById(codigoCategoria);
 
@@ -72,11 +76,19 @@ public class CategoriaResource {
 
     @ResponseBody
     @GetMapping("**/buscarCategoriaNome/{nomeCategoria}")
-    public ResponseEntity<List<Categoria>> buscarCategoriaNome(@PathVariable("nomeCategoria") String nomeCategoria){
+    public ResponseEntity<List<Categoria>> buscarCategoriaNome(@PathVariable("nomeCategoria") String nomeCategoria) {
 
         List<Categoria> categorias = categoriaRepository.buscarCategoriaNome(nomeCategoria.toUpperCase());
 
         return new ResponseEntity<List<Categoria>>(categorias, HttpStatus.OK);
 
+    }
+
+    @PutMapping("**/atualizarCategoria/{codigoCategoria}")
+    public ResponseEntity<Categoria> atualizarPessoa(@PathVariable("codigoCategoria") Long codigoCategoria, @Valid @RequestBody Categoria categoria) {
+
+        Categoria categoriaAtualiza = categoriaService.atualizarCategoria(codigoCategoria,categoria);
+
+        return ResponseEntity.ok(categoriaAtualiza);
     }
 }
