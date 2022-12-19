@@ -9,7 +9,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[categoria](
-    [codigo] [bigint] IDENTITY(1,1) NOT NULL,
+    [codigo] [bigint] PRIMARY KEY IDENTITY(1,1) NOT NULL,
     [nome] [varchar](50) NULL
     ) ON [PRIMARY]
     GO
