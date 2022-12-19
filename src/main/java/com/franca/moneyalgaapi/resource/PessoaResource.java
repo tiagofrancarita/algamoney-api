@@ -1,18 +1,17 @@
 package com.franca.moneyalgaapi.resource;
 
-import com.franca.moneyalgaapi.model.Categoria;
+import com.franca.moneyalgaapi.event.RecursoCriadoEvent;
 import com.franca.moneyalgaapi.model.Pessoa;
 import com.franca.moneyalgaapi.rapository.PessoaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,9 +23,12 @@ public class PessoaResource {
 
     private final PessoaRepository pessoaRepository;
 
+    private ApplicationEventPublisher publisher;
+
     @Autowired
-    public PessoaResource(PessoaRepository pessoaRepository) {
+    public PessoaResource(PessoaRepository pessoaRepository, ApplicationEventPublisher publisher) {
         this.pessoaRepository = pessoaRepository;
+        this.publisher = publisher;
     }
 
     @GetMapping("/listartodas")
@@ -42,10 +44,7 @@ public class PessoaResource {
 
         Pessoa pessoaSalva =  pessoaRepository.save(pessoa);
 
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
-                .path("/{codigo}").buildAndExpand(pessoaSalva.getCodigo()).toUri();
-
-        response.setHeader("Location", uri.toASCIIString());
+        publisher.publishEvent(new RecursoCriadoEvent(this,response,pessoaSalva.getCodigo()));
 
         return new ResponseEntity<Pessoa>(pessoaSalva, HttpStatus.CREATED);
 
