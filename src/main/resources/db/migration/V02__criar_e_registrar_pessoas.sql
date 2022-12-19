@@ -9,7 +9,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[pessoa](
- [codigo] [bigint] IDENTITY(1,1) NOT NULL,
+ [codigo] [bigint] PRIMARY KEY IDENTITY(1,1) NOT NULL,
  [nome] [varchar](100) NULL,
  [logradouro] [varchar](100) NULL,
  [numero] [varchar](100) NULL,
