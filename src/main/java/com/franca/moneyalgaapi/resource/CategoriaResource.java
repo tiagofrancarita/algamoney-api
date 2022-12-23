@@ -2,7 +2,6 @@ package com.franca.moneyalgaapi.resource;
 
 import com.franca.moneyalgaapi.event.RecursoCriadoEvent;
 import com.franca.moneyalgaapi.model.Categoria;
-import com.franca.moneyalgaapi.model.Pessoa;
 import com.franca.moneyalgaapi.rapository.CategoriaRepository;
 import com.franca.moneyalgaapi.service.CategoriaService;
 import org.slf4j.Logger;
@@ -12,7 +11,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
@@ -36,7 +34,6 @@ public class CategoriaResource {
         this.categoriaService = categoriaService;
         this.publisher = publisher;
     }
-
     @GetMapping("/listartodas")
     public List<Categoria> listar() {
 
@@ -56,7 +53,7 @@ public class CategoriaResource {
 
     }
 
-    @GetMapping("**/busca/{codigoCategoria}")
+    @GetMapping("/buscaCategoria/{codigoCategoria}")
     public ResponseEntity<Categoria> buscarCategoriaPorID(@PathVariable Long codigoCategoria) {
 
         Optional<Categoria> categoria = categoriaRepository.findById(codigoCategoria);
@@ -65,7 +62,7 @@ public class CategoriaResource {
 
     }
 
-    @DeleteMapping("**/deletarCategoriaId/{codigoCategoria}")
+    @DeleteMapping("/deletarCategoriaId/{codigoCategoria}")
     public ResponseEntity<String> deletarPessoaId(@PathVariable("codigoCategoria") Long codigoCategoria) {
 
         categoriaRepository.deleteById(codigoCategoria);

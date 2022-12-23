@@ -1,0 +1,143 @@
+openapi: 3.0.0
+info:
+  title: API - FINANÇAS PESSOAIS
+  description: Api para controle de finanças pessoais
+  version: 0.1.9
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: http://localhost:8080/algamoney
+    description: Servidor de testes
+    ##/algamoney/v3/api-doc
+    ##$ref: '#/components/schemas/listarCategoria'
+tags:
+  - name: entrypoint-categorias
+    description: Everything about your Pets
+  - name: entrypoint-pessoas
+    description: Entrypoint pessoas
+  - name: entrypoint-lancamentos
+    description: lançamentos
+    
+paths:
+  /categorias/listartodas:
+    get:
+      tags:
+        - entrypoint-categorias
+      summary: listar todas as categorias cadastradas
+      description: listar todas as categorias cadastradas
+      operationId: listFullCategorias
+      responses:
+        '200':
+          description: Operação executada com sucesso
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/listarCategoria'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/listarCategoria'
+        '400':
+          description: Código inválido
+        '404':
+          description: Categoria não encontrada
+        '405':
+          description: Exception
+
+  /categorias/cadastrarCategoria:
+    post:
+      tags:
+        - entrypoint-categorias
+      summary: Cadastra uma nova categoria
+      description: Cadastra uma nova categoria
+      operationId: addCategoria
+      requestBody:
+        description: Cadastra uma nova categoria
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/listarCategoria'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/listarCategoria'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/listarCategoria'
+        required: true
+      responses:
+        '200':
+          description: Categoria cadastrada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listarCategoria'
+            application/xml:
+              schema:
+               $ref: '#/components/schemas/listarCategoria'
+        '405':
+          description: Entrada inválida
+          
+
+  /buscaCategoria/{codigoCategoria}:
+    get:
+      tags:
+        - entrypoint-categorias
+      summary: buscar categoria pelo ID
+      description: Retorna uma unica categoria
+      operationId: getCatByID
+      parameters:
+        - name: codigoCategoria
+          in: path
+          description: Código a retornar
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listarCategoria'       
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/listarCategoria'
+        '400':
+          description: Código informado é inválido
+        '404':
+          description: Categoria não encontrada
+ 
+  /deletarCategoria/{codigoCategoria}:         
+    delete:
+      tags:
+       - entrypoint-categorias
+      summary: Deletar categoria por ID
+      description: Deleta uma unica categoria pelo ID
+      operationId: deleteCat
+      parameters:
+        - name: codigoCategoria
+          in: path
+          description: Código categoria a ser excluido
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Excluido com sucesso
+        '400':
+          description: Invalid pet value
+
+components:
+  schemas:
+    listarCategoria:
+      type: object
+      properties:
+        código:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Supermercado
+      required:  
+        - id
+        - name
