@@ -2,16 +2,20 @@ package com.franca.moneyalgaapi.resource;
 
 
 import com.franca.moneyalgaapi.event.RecursoCriadoEvent;
+import com.franca.moneyalgaapi.exceptionhandler.AlgaMoneyExceptionHandler;
 import com.franca.moneyalgaapi.model.Lancamento;
 import com.franca.moneyalgaapi.rapository.LancamentoRepository;
 import com.franca.moneyalgaapi.service.LancamentoService;
+import com.franca.moneyalgaapi.service.exception.PessoaInexistenteOuInativaException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,13 +38,15 @@ public class LancamentoResource {
     private final LancamentoRepository lancamentoRepository;
     private  final LancamentoService lancamentoService;
     private ApplicationEventPublisher publisher;
+    private MessageSource messageSource;
 
     @Autowired
-    public LancamentoResource(@Lazy LancamentoResource lancamentoResource, LancamentoRepository lancamentoRepository, LancamentoService lancamentoService, ApplicationEventPublisher publisher) {
+    public LancamentoResource(@Lazy LancamentoResource lancamentoResource, LancamentoRepository lancamentoRepository, LancamentoService lancamentoService, ApplicationEventPublisher publisher, MessageSource messageSource) {
         this.lancamentoResource = lancamentoResource;
         this.lancamentoRepository = lancamentoRepository;
         this.lancamentoService = lancamentoService;
         this.publisher = publisher;
+        this.messageSource = messageSource;
     }
 
     @ApiOperation(value = "Lista todas os lançamentos cadastrados")
@@ -64,7 +71,7 @@ public class LancamentoResource {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Lancamento> cadastrarCategoria(@Valid @RequestBody Lancamento lancamento , HttpServletResponse response) {
 
-        Lancamento lancamentoSalvo = lancamentoRepository.save(lancamento);
+        Lancamento lancamentoSalvo = lancamentoService.salvarLancamento(lancamento);
         publisher.publishEvent(new RecursoCriadoEvent(this, response, lancamentoSalvo.getCodigo()));
         return new ResponseEntity<Lancamento>(lancamentoSalvo, HttpStatus.CREATED);
 
@@ -95,5 +102,13 @@ public class LancamentoResource {
 
         Lancamento lancamentoAtualiza = lancamentoService.atualizarLancamento(codigoLancamento,lancamento);
         return ResponseEntity.ok(lancamentoAtualiza);
+    }
+
+    @ExceptionHandler({ PessoaInexistenteOuInativaException.class })
+    public ResponseEntity<Object> handlePessoaInexistenteOuInativaException(PessoaInexistenteOuInativaException ex) {
+        String mensagemUsuario = messageSource.getMessage("pessoa.inexistente-ou-inativa", null, LocaleContextHolder.getLocale());
+        String mensagemDesenvolvedor = ex.toString();
+        List<AlgaMoneyExceptionHandler.Erro> erros = Arrays.asList(new AlgaMoneyExceptionHandler.Erro(mensagemUsuario, mensagemDesenvolvedor));
+        return ResponseEntity.badRequest().body(erros);
     }
 }
