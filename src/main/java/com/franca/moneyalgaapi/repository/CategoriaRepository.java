@@ -1,4 +1,4 @@
-package com.franca.moneyalgaapi.rapository;
+package com.franca.moneyalgaapi.repository;
 
 import com.franca.moneyalgaapi.model.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +12,5 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
     @Query(value = "SELECT c FROM Categoria c WHERE UPPER(TRIM(c.nome)) LIKE %?1%")
     List<Categoria> buscarCategoriaNome(String nomeCategoria);
+
 }

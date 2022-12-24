@@ -2,7 +2,7 @@ package com.franca.moneyalgaapi.resource;
 
 import com.franca.moneyalgaapi.event.RecursoCriadoEvent;
 import com.franca.moneyalgaapi.model.Pessoa;
-import com.franca.moneyalgaapi.rapository.PessoaRepository;
+import com.franca.moneyalgaapi.repository.PessoaRepository;
 import com.franca.moneyalgaapi.service.PessoaService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -67,6 +67,7 @@ public class PessoaResource {
 
     }
 
+    @ApiOperation(value = "Deleta uma pessoa por ID")
     @DeleteMapping("**/deletarPessoaId/{codigoPessoa}")
     public ResponseEntity<String> deletarPessoaId(@PathVariable("codigoPessoa") Long codigoPessoa){
 
@@ -74,6 +75,7 @@ public class PessoaResource {
         return new ResponseEntity<String>("Acesso Excluido", HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Busca pessoa cadastrada pelo nome")
     @ResponseBody
     @GetMapping("**/buscarPessoaNome/{nomePessoa}")
     public ResponseEntity<List<Pessoa>> buscarCategoriaNome(@PathVariable("nomePessoa") String nomePessoa){
@@ -82,7 +84,7 @@ public class PessoaResource {
         return new ResponseEntity<List<Pessoa>>(pessoas, HttpStatus.OK);
 
     }
-
+    @ApiOperation(value = "Atualiza uma pessoa por id")
     @PutMapping("**/atualizarPessoa/{codigoPessoa}")
     public ResponseEntity<Pessoa> atualizarPessoa(@PathVariable("codigoPessoa") Long codigoPessoa, @Valid @RequestBody Pessoa pessoa){
 
@@ -90,4 +92,22 @@ public class PessoaResource {
 
         return ResponseEntity.ok(pessoaAtualizar);
     }
+
+    @ApiOperation(value = "Inativa uma pessoa por ID")
+    @PutMapping("**/inativarPessoa/{codigoPessoa}")
+    public ResponseEntity<String> inativarPessoa(@PathVariable("codigoPessoa")Long codigoPessoa){
+
+        pessoaRepository.inativarPessoa(codigoPessoa);
+        return new ResponseEntity<String>("Pessoa inativada com sucesso", HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Ativa uma pessoa por ID")
+    @PutMapping("**/ativarPessoa/{codigoPessoa}")
+    public ResponseEntity<String> ativarPessoa(@PathVariable("codigoPessoa")Long codigoPessoa){
+
+        pessoaRepository.ativarPessoa(codigoPessoa);
+        return new ResponseEntity<String>("Pessoa ativada com sucesso", HttpStatus.OK);
+    }
+
+
 }
