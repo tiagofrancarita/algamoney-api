@@ -59,6 +59,7 @@ public class PessoaResource {
     }
 
     @GetMapping("**/busca/{codigoPessoa}")
+    @ApiOperation(value = "Busca pessoa cadastrada por ID")
     public ResponseEntity<Pessoa> buscarPessoaPorID(@PathVariable Long codigoPessoa)  {
 
         Optional<Pessoa> pessoa = pessoaRepository.findById(codigoPessoa);
