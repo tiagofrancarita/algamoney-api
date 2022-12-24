@@ -28,7 +28,7 @@ public class CategoriaService {
 
         Categoria categoriaAtualiza = categoriaRepository.findById(codigoCategoria)
                 .orElseThrow(() -> new EmptyResultDataAccessException(1));
-        BeanUtils.copyProperties(categoria, categoriaAtualiza,"codigoPessoa");
+        BeanUtils.copyProperties(categoria, categoriaAtualiza,"codigoCategoria");
 
         return categoriaRepository.save(categoriaAtualiza);
     }
