@@ -1,7 +1,10 @@
 package com.franca.moneyalgaapi.configs;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -15,7 +18,20 @@ import java.util.ArrayList;
 
 @Configuration
 @EnableSwagger2
+@ComponentScan(basePackages = "com.franca.moneyalgaapi.resource")
 public class SpringFoxConfig {
+
+    private static final String BASE_PACKAGES = "com.franca.moneyalgaapi.resource";
+    private static final String ERROR = "String";
+
+    @Value("${info.app.name}")
+    private String apiTitle;
+
+    @Value("${info.app.description}")
+    private String apiDescription;
+
+    @Value("${info.app.version}")
+    private String apiVersion;
 
     @Bean
     public Docket api(){
@@ -30,16 +46,15 @@ public class SpringFoxConfig {
 
     private ApiInfo metaInfo() {
 
-        ApiInfo apiInfo = new ApiInfo(
-                "API - FINANÇA",
-                "API para o geranciamento de finanças pessoais",
-                "1.0.0",
-                "Termos e serviços",
-                new Contact("Tiago França","https://github.com/tiagofrancarita",
-                        "tiagofranca.rita@gmail.com"),
-                "Apache Licence",
-                "https://www.apache.org/licesen.html",new ArrayList<VendorExtension>());
+        return new ApiInfoBuilder()
+                .title(apiTitle)
+                .description(apiDescription)
+                .termsOfServiceUrl("aa")
+                .license("Apache Licence")
+                .licenseUrl("https://www.apache.org/licesen.html")
+                .contact(new Contact("Tiago França","https://github.com/tiagofrancarita",
+                        "tiagofranca.rita@gmail.com"))
+                .build();
 
-        return apiInfo;
     }
 }

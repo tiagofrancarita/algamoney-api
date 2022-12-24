@@ -6,9 +6,6 @@ import com.franca.moneyalgaapi.rapository.PessoaRepository;
 import com.franca.moneyalgaapi.service.PessoaService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +26,7 @@ import java.util.Optional;
 @Api(value = "entry-point para gerenciar pessoas", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, tags = {"entrypoint-pessoas"})
 public class PessoaResource {
 
-    private static final Logger logger = LoggerFactory.getLogger(CategoriaResource.class);
+    private static final Logger logger = LoggerFactory.getLogger(PessoaResource.class);
 
     private final PessoaRepository pessoaRepository;
     private final PessoaService pessoaService;
@@ -42,6 +39,7 @@ public class PessoaResource {
         this.pessoaService = pessoaService;
         this.publisher = publisher;
     }
+
     @ApiOperation(value = "Lista todas as pessoas cadastradas")
     @GetMapping(value = "/listartodas")
     public List<Pessoa> listar(){
