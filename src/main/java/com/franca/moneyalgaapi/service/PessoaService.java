@@ -30,4 +30,17 @@ public class PessoaService {
 
         return pessoaRepository.save(pessoaAtualizar);
     }
+
+    public void atualizarPropriedadeAtivo(Long codigo, Boolean inativo) {
+        Pessoa pessoaSalva = buscarPessoaPeloCodigo(codigo);
+        pessoaSalva.setAtivo(inativo);
+        pessoaRepository.save(pessoaSalva);
+    }
+
+    public Pessoa buscarPessoaPeloCodigo(Long codigo) {
+        Pessoa pessoaSalva =  pessoaRepository.findById(codigo)
+                                .orElseThrow(() -> new EmptyResultDataAccessException(1));
+
+        return pessoaSalva;
+    }
 }

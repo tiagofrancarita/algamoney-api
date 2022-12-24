@@ -12,4 +12,5 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
     @Query(value = "SELECT c FROM Categoria c WHERE UPPER(TRIM(c.nome)) LIKE %?1%")
     List<Categoria> buscarCategoriaNome(String nomeCategoria);
+
 }

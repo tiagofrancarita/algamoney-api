@@ -1,5 +1,7 @@
 package com.franca.moneyalgaapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
@@ -19,7 +21,13 @@ public class Pessoa {
     private Endereco endereco;
 
     @NotNull
-    private Boolean Ativo;
+    private Boolean ativo;
+
+    @JsonIgnore
+    @Transient
+    public boolean isInativo() {
+        return !this.ativo;
+    }
 
     public Long getCodigo() {
         return codigo;
@@ -46,11 +54,11 @@ public class Pessoa {
     }
 
     public Boolean getAtivo() {
-        return Ativo;
+        return ativo;
     }
 
     public void setAtivo(Boolean ativo) {
-        Ativo = ativo;
+        ativo = ativo;
     }
 
     @Override
