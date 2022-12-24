@@ -31,14 +31,17 @@ public class Lancamento {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo")
+    @NotNull
     private TipoLancamento tipoLancamento;
 
     @ManyToOne
     @JoinColumn(name = "codigo_categoria")
+    @NotNull
     private Categoria categoria;
 
     @ManyToOne
     @JoinColumn(name = "codigo_pessoa")
+    @NotNull
     private Pessoa pessoa;
 
     @NotNull
