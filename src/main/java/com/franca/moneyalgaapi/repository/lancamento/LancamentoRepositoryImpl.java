@@ -52,6 +52,7 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
         criteria.select(builder.count(root));
 
         return manager.createQuery(criteria).getSingleResult();
+
     }
 
     private void adicionarRestricoesDePaginacao(TypedQuery<Lancamento> query, Pageable pageable) {
