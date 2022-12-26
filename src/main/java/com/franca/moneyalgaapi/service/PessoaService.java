@@ -1,7 +1,7 @@
 package com.franca.moneyalgaapi.service;
 
 import com.franca.moneyalgaapi.model.Pessoa;
-import com.franca.moneyalgaapi.rapository.PessoaRepository;
+import com.franca.moneyalgaapi.repository.PessoaRepository;
 import com.franca.moneyalgaapi.resource.CategoriaResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

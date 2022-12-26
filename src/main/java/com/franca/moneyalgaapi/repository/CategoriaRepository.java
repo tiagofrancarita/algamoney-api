@@ -1,4 +1,4 @@
-package com.franca.moneyalgaapi.rapository;
+package com.franca.moneyalgaapi.repository;
 
 import com.franca.moneyalgaapi.model.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;

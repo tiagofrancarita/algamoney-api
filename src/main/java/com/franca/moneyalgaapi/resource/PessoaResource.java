@@ -2,7 +2,7 @@ package com.franca.moneyalgaapi.resource;
 
 import com.franca.moneyalgaapi.event.RecursoCriadoEvent;
 import com.franca.moneyalgaapi.model.Pessoa;
-import com.franca.moneyalgaapi.rapository.PessoaRepository;
+import com.franca.moneyalgaapi.repository.PessoaRepository;
 import com.franca.moneyalgaapi.service.PessoaService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

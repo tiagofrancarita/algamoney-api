@@ -4,7 +4,8 @@ package com.franca.moneyalgaapi.resource;
 import com.franca.moneyalgaapi.event.RecursoCriadoEvent;
 import com.franca.moneyalgaapi.exceptionhandler.AlgaMoneyExceptionHandler;
 import com.franca.moneyalgaapi.model.Lancamento;
-import com.franca.moneyalgaapi.rapository.LancamentoRepository;
+import com.franca.moneyalgaapi.repository.LancamentoRepository;
+import com.franca.moneyalgaapi.repository.filter.LancamentoFilter;
 import com.franca.moneyalgaapi.service.LancamentoService;
 import com.franca.moneyalgaapi.service.exception.PessoaInexistenteOuInativaException;
 import io.swagger.annotations.Api;
@@ -16,6 +17,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -37,11 +40,15 @@ public class LancamentoResource {
     private final LancamentoResource lancamentoResource;
     private final LancamentoRepository lancamentoRepository;
     private  final LancamentoService lancamentoService;
+
     private ApplicationEventPublisher publisher;
     private MessageSource messageSource;
 
     @Autowired
-    public LancamentoResource(@Lazy LancamentoResource lancamentoResource, LancamentoRepository lancamentoRepository, LancamentoService lancamentoService, ApplicationEventPublisher publisher, MessageSource messageSource) {
+    public LancamentoResource(@Lazy LancamentoResource lancamentoResource,
+                              LancamentoRepository lancamentoRepository, LancamentoService lancamentoService,
+                              ApplicationEventPublisher publisher, MessageSource messageSource) {
+
         this.lancamentoResource = lancamentoResource;
         this.lancamentoRepository = lancamentoRepository;
         this.lancamentoService = lancamentoService;
@@ -54,6 +61,13 @@ public class LancamentoResource {
     public List<Lancamento> listar() {
 
         return lancamentoRepository.findAll();
+
+    }
+
+    @GetMapping(value = "/listarPesquisa")
+    public Page<Lancamento> pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable){
+
+        return lancamentoRepository.filtrar(lancamentoFilter, pageable);
 
     }
 

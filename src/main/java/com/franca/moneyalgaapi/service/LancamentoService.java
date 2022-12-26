@@ -3,8 +3,8 @@ package com.franca.moneyalgaapi.service;
 
 import com.franca.moneyalgaapi.model.Lancamento;
 import com.franca.moneyalgaapi.model.Pessoa;
-import com.franca.moneyalgaapi.rapository.LancamentoRepository;
-import com.franca.moneyalgaapi.rapository.PessoaRepository;
+import com.franca.moneyalgaapi.repository.LancamentoRepository;
+import com.franca.moneyalgaapi.repository.PessoaRepository;
 import com.franca.moneyalgaapi.resource.CategoriaResource;
 import com.franca.moneyalgaapi.service.exception.PessoaInexistenteOuInativaException;
 import org.slf4j.Logger;
