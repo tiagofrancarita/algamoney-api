@@ -40,6 +40,7 @@ public class LancamentoResource {
     private final LancamentoResource lancamentoResource;
     private final LancamentoRepository lancamentoRepository;
     private  final LancamentoService lancamentoService;
+
     private ApplicationEventPublisher publisher;
     private MessageSource messageSource;
 
