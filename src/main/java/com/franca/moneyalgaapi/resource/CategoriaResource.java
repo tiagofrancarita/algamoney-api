@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.context.annotation.Lazy;
 
 @RestController
 @RequestMapping("/categorias")
@@ -25,23 +26,20 @@ import java.util.Optional;
 public class CategoriaResource {
 
     private static final Logger logger = LoggerFactory.getLogger(CategoriaResource.class);
-
     private final CategoriaRepository categoriaRepository;
-
     private final CategoriaService categoriaService;
-
     private ApplicationEventPublisher publisher;
 
     @Autowired
-    public CategoriaResource(CategoriaRepository categoriaRepository, CategoriaService categoriaService, ApplicationEventPublisher publisher) {
+    public CategoriaResource(@Lazy CategoriaRepository categoriaRepository, CategoriaService categoriaService, ApplicationEventPublisher publisher) {
         this.categoriaRepository = categoriaRepository;
         this.categoriaService = categoriaService;
         this.publisher = publisher;
     }
 
     @ApiOperation(value = "Lista todas as categorias cadastradas")
-    @GetMapping("/listartodas")
-    public List<Categoria> listar() {
+    @GetMapping("/listarTodasCategorias")
+    public List<Categoria> listarTodasCategorias() {
 
         return categoriaRepository.findAll();
 

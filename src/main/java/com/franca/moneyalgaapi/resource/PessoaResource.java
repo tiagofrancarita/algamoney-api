@@ -108,6 +108,4 @@ public class PessoaResource {
         pessoaRepository.ativarPessoa(codigoPessoa);
         return new ResponseEntity<String>("Pessoa ativada com sucesso", HttpStatus.OK);
     }
-
-
 }

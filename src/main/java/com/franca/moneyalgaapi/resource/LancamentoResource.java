@@ -57,8 +57,8 @@ public class LancamentoResource {
     }
 
     @ApiOperation(value = "Lista todas os lançamentos cadastrados")
-    @GetMapping(value = "/listartodas")
-    public List<Lancamento> listar() {
+    @GetMapping(value = "/listarTodosLancamentos")
+    public List<Lancamento> listarTodosLancamentos() {
 
         return lancamentoRepository.findAll();
 

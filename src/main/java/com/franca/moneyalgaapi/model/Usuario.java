@@ -33,7 +33,7 @@ public class Usuario implements UserDetails {
                 foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "fk_usuarioPessoa"))
     private Pessoa pessoa;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "usuarios_acesso", uniqueConstraints = @UniqueConstraint (columnNames = {"codigo_usuario", "codigo_acesso"} , name = "unique_acesso_user"),
             joinColumns = @JoinColumn(name = "codigo_usuario", referencedColumnName = "codigo", table = "usuario", unique = false,
                                                     foreignKey = @ForeignKey(name = "fk_usuarioAcesso", value = ConstraintMode.CONSTRAINT)),
